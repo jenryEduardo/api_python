@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # Carga las variables del archivo .env
+load_dotenv()  
 
 class Config:
     # Carga la URI de la base de datos y la clave secreta para JWT desde las variables de entorno

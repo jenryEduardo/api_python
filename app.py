@@ -9,9 +9,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(config['development'])
     db.init_app(app)
-
     jwt = JWTManager(app)
-
     app.register_blueprint(usuario_blueprint)
     return app
 

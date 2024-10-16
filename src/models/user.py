@@ -1,12 +1,14 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-
+from dotenv import load_dotenv
+import os
 db = SQLAlchemy()
 bcrypt = Bcrypt()
-
-class User(db.Model):
+load_dotenv()  
+class User(db.Model):    
+    schema_name = os.getenv('SCHEMA_NAME')
     __tablename__ = 'user'
-    __table_args__ = {'schema': 'bd_test1'}
+    __table_args__ = {'schema': schema_name}
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
