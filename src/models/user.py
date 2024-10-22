@@ -8,11 +8,11 @@ bcrypt = Bcrypt()
 load_dotenv()
 
 class User(db.Model):
-    schema_name = os.getenv('SCHEMA_NAME')  # Nombre del esquema de la base de datos
+    schema_name = os.getenv('SCHEMA_NAME') 
     __tablename__ = 'users'
     __table_args__ = {'schema': schema_name}
     
-    id_user = db.Column(db.Integer, primary_key=True)  # Este es el campo clave primaria
+    id_user = db.Column(db.Integer, primary_key=True) 
     nombre = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     
