@@ -1,5 +1,5 @@
 from flask import Blueprint
-from src.controllers.doctorController import crear_doctor, login_doctor, obtener_doctor, eliminar_doctor
+from src.controllers.doctorController import crear_doctor, login_doctor, obtener_doctor, eliminar_doctor,editar_doctor
 
 doctor_blueprint = Blueprint('doctores', __name__)
 
@@ -11,6 +11,10 @@ def crear_doctor_ruta():
 @doctor_blueprint.route('/doctors/login', methods=['POST'])
 def login_doctor_ruta():
     return login_doctor()
+
+@doctor_blueprint.route('/edit',methods=['PUT'])
+def edit_doctor(id_doctor):
+    return editar_doctor(id_doctor)
 
 @doctor_blueprint.route('/doctors/profile', methods=['GET'])
 def obtener_doctor_ruta():

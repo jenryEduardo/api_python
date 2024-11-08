@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-@jwt_required()
+
 def crear_usuario():
     data = request.get_json()
     
@@ -37,7 +37,7 @@ def crear_usuario():
         "email": nuevo_usuario.email
     }), 201
 
-@jwt_required()
+
 def login_usuario():
     data = request.get_json()
     email = data.get('email')
@@ -75,3 +75,37 @@ def eliminar_usuario(user_id):
     db.session.commit()
 
     return jsonify({"mensaje": "Usuario eliminado exitosamente"}), 200
+
+
+@jwt_required()
+def editar_usuario(user_id):
+    
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"mensaje": "Usuario no encontrado"}), 404
+
+
+    data = request.get_json()
+    
+  
+    user.rol = data.get('rol', user.rol)
+    user.nombre = data.get('nombre', user.nombre)
+    user.apellido = data.get('apellido', user.apellido)
+    user.email = data.get('email', user.email)
+    user.num_tel = data.get('num_tel', user.num_tel)
+
+  
+    nueva_contra = data.get('contra')
+    if nueva_contra:
+        user.contra = bcrypt.hashpw(nueva_contra.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+    db.session.commit()
+
+    return jsonify({
+        "mensaje": "Usuario actualizado exitosamente",
+        "id_user": user.id_user,
+        "nombre": user.nombre,
+        "email": user.email,
+        "rol": user.rol.value  
+    }), 200

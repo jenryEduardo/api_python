@@ -88,3 +88,41 @@ def eliminar_doctor(doctor_id):
     db.session.commit()
 
     return jsonify({"mensaje": "Doctor eliminado exitosamente"}), 200
+
+
+@jwt_required()
+def editar_doctor(id_doctor):
+    # Buscar el doctor en la base de datos
+    doctor = Doctor.query.get(id_doctor)
+
+    if not doctor:
+        return jsonify({"mensaje": "Doctor no encontrado"}), 404
+
+
+    data = request.get_json()
+    
+
+    doctor.nombre = data.get('nombre', doctor.nombre)
+    doctor.apellido = data.get('apellido', doctor.apellido)
+    doctor.email = data.get('email', doctor.email)
+    doctor.num_tel = data.get('num_tel', doctor.num_tel)
+    doctor.rol = data.get('rol', doctor.rol)
+    doctor.especialidad = data.get('especialidad', doctor.especialidad)
+    doctor.num_licencia = data.get('num_licencia', doctor.num_licencia)
+
+
+    nueva_contra = data.get('contra')
+    if nueva_contra:
+        doctor.contra = bcrypt.hashpw(nueva_contra.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+   
+    db.session.commit()
+
+    return jsonify({
+        "mensaje": "Doctor actualizado exitosamente",
+        "id_doctor": doctor.id_doctor,
+        "nombre": doctor.nombre,
+        "email": doctor.email,
+        "especialidad": doctor.especialidad,
+        "num_licencia": doctor.num_licencia
+    }), 200
