@@ -3,6 +3,7 @@ from src.models.user import User, db
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import bcrypt
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
@@ -41,13 +42,13 @@ def crear_usuario():
 def login_usuario():
     data = request.get_json()
     email = data.get('email')
-    password = data.get('password')
+    password = data.get('contra')
     user = User.query.filter_by(email=email).first()
 
     if not user or not bcrypt.checkpw(password.encode('utf-8'), user.contra.encode('utf-8')):
         return jsonify({"mensaje": "Credenciales inválidas"}), 401
 
-    access_token = create_access_token(identity=user.id_user)
+    access_token = create_access_token(identity=user.id_user,expires_delta=timedelta(hours=10))
     return jsonify({"mensaje": "Inicio de sesión exitoso", "token": access_token}), 200
 
 @jwt_required()

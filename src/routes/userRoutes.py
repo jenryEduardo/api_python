@@ -1,7 +1,7 @@
 from flask import Blueprint
 from src.controllers.userController import crear_usuario, login_usuario, obtener_usuario, eliminar_usuario,editar_usuario
 
-usuario_blueprint = Blueprint('usuarios', __name__)
+usuario_blueprint = Blueprint('/usuarios', __name__,url_prefix='/usuarios')
 
 @usuario_blueprint.route('/users', methods=['POST'])
 def crear_usuario_ruta():
