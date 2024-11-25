@@ -85,7 +85,7 @@ def obtener_usuario():
 
 
 
-@jwt_required()
+# @jwt_required()
 def eliminar_usuario(user_id):
     user = User.query.get(user_id)
 
@@ -98,7 +98,7 @@ def eliminar_usuario(user_id):
     return jsonify({"mensaje": "Usuario eliminado exitosamente"}), 200
 
 
-@jwt_required()
+# @jwt_required()
 def editar_usuario(user_id):
     
     user = User.query.get(user_id)
