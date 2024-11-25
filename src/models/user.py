@@ -1,19 +1,16 @@
-# user.py
 from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from sqlalchemy import Enum, Integer, String
 import enum
 import os
 
-# Inicialización de SQLAlchemy y Bcrypt
+# Inicialización de SQLAlchemy
 db = SQLAlchemy()
-bcrypt = Bcrypt()
 load_dotenv()
 
 class RolEnum(enum.Enum):
     admin = "admin"
-    enfermera = "enfermera"
+    enfermera = "enfermero"
     doctor = "doctor"
 
 # Definición del modelo User
@@ -29,20 +26,6 @@ class User(db.Model):
     email = db.Column(String(100), nullable=False, unique=True)
     contra = db.Column(String(150), nullable=False)
     num_tel = db.Column(Integer, nullable=False)
-    
-    # consultas = db.relationship('Consulta', backref='user', lazy=True)
-
-    def __init__(self, rol, nombre, apellido, email, contra, num_tel):
-        self.rol = rol
-        self.nombre = nombre
-        self.apellido = apellido
-        self.email = email
-        self.contra = bcrypt.generate_password_hash(contra).decode('utf-8')
-        self.num_tel = num_tel
-
-    def check_password(self, contra):
-        # Usar bcrypt para verificar la contraseña
-        return bcrypt.check_password_hash(self.contra, contra)
 
     def __repr__(self):
         return f'<User {self.nombre}>'
